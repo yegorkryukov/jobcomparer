@@ -1,1 +1,16 @@
-<h1>Hello {{name}}</h1>
+{% extends 'base.html' %}
+ 
+{% block container %}
+  <div class="top-pad">
+    {% for d in job_descriptions %}
+      <div>
+        <h1>
+          {{ d.title }}
+        </h1>
+        <p>
+          {{ d.description }}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

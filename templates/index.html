@@ -1,16 +1,70 @@
 {% extends 'base.html' %}
  
 {% block container %}
-  <div class="top-pad">
-    {% for d in job_descriptions %}
-      <div>
-        <h1>
-          {{ d.title }}
-        </h1>
-        <p>
-          {{ d.description }}
-        </p>
+
+
+<div class="container">
+  <div class="row justify-content-around">
+    <form>
+      <div class="form-row align-items-center input-group">
+        <div class="col-sm-10 ml-auto">
+          <input type="text" class="form-control" id="job_title" placeholder="Enter job title">
+        </div>
+        <div class="col ml-auto">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
       </div>
-    {% endfor %}
-  </div>
+    </form>
+    
+  </div> 
+</div>
+
+<div class="container">
+  {% for d in job_descriptions %}
+  <div class="row align-items-center">
+    <div class="card-deck mb-3 text-left">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">{{ d.title }}</h4>
+        </div>       
+        <div class="card-body">
+          <h5>Company: {{ d.company }}</h3>
+          <p>
+            {{ d.description *10 }}
+          </p>
+          <button type="button" class="btn btn-lg btn-block btn-outline-primary">I like this one</button>
+        </div>
+      </div>
+      
+      <div class="col-sm-1">
+        <div class="row align-items-center">
+          <div class="col">
+            <div class="text-center">
+              <p>@</p>
+            </div>            
+          </div>  
+        </div>            
+      </div>
+    
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">{{ d.title }}</h4>
+        </div>
+        <div class="card-body">
+          <h5>Company: {{ d.company }}</h3>
+          <p>
+            {{ d.description *10}}
+          </p>
+          <button type="button" class="btn btn-lg btn-block btn-outline-primary">I like this one</button>
+        </div>
+      </div>
+    </div>
+  </div>   
+</div>
+    
+
+  {% endfor %}
+  
+</div>
+
 {% endblock %}

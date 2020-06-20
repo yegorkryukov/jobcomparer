@@ -33,9 +33,7 @@ def scrape_descriptions():
   global scrape_in_progress
   global scrape_complete
 
-  scrape_rerun = request.args.get('rerun', None)
-
-  if not scrape_in_progress or scrape_rerun:
+  if not scrape_in_progress:
     scrape_in_progress = True
     global jobs_list
     
@@ -62,7 +60,9 @@ def get_results():
 
 def finished_scrape(null):
   global scrape_complete
+  global scrape_in_progress
   scrape_complete = True
+  scrape_in_progress = False
 
 
 if __name__ == "__main__":

@@ -66,22 +66,33 @@ def finished_scrape(null):
 
 
 if __name__ == "__main__":
-  from sys import stdout
-  from twisted.logger import globalLogBeginner, textFileLogObserver
-  from twisted.web import server, wsgi
-  from twisted.internet import endpoints, reactor
+  reactor_args = {}
 
-  # start the logger
-  globalLogBeginner.beginLoggingTo([textFileLogObserver(stdout)])
+  def run_twisted_wsgi():
+    from sys import stdout
+    from twisted.logger import globalLogBeginner, textFileLogObserver
+    from twisted.web import server, wsgi
+    from twisted.internet import endpoints, reactor
 
-  logger = logging.getLogger(__name__)
-  logging.basicConfig(level=logging.INFO)
+    # start the logger
+    globalLogBeginner.beginLoggingTo([textFileLogObserver(stdout)])
 
-  # start the WSGI server
-  root_resource = wsgi.WSGIResource(reactor, reactor.getThreadPool(), app)
-  factory = server.Site(root_resource)
-  http_server = endpoints.TCP4ServerEndpoint(reactor, 9000)
-  http_server.listen(factory)
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(level=logging.INFO)
 
-  # start event loop
-  reactor.run()
+    # start the WSGI server
+    root_resource = wsgi.WSGIResource(reactor, reactor.getThreadPool(), app)
+    factory = server.Site(root_resource)
+    http_server = endpoints.TCP4ServerEndpoint(reactor, 9000)
+    http_server.listen(factory)
+
+    # start event loop
+    reactor.run(**reactor_args)
+
+  if app.debug:
+    # Disable twisted signal handlers in development only.
+    reactor_args['installSignalHandlers'] = 0
+    # Turn on auto reload.
+    import werkzeug.serving
+    run_twisted_wsgi = werkzeug.serving.run_with_reloader(run_twisted_wsgi)
+  run_twisted_wsgi()

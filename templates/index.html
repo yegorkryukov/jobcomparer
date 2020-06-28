@@ -2,21 +2,19 @@
  
 {% block container %}
 
-
 <div class="container">
-  <div class="row justify-content-around">
-    <form>
-      <div class="form-row align-items-center input-group">
-        <div class="col-sm-10 ml-auto">
-          <input type="text" class="form-control" id="job_title" placeholder="Enter job title">
+  <div class="row">
+    <div class="col border">
+      <form>
+        <div class="form-row justify-content-center">
+          <div class="col-sm-9">
+            <input type="text" class="form-control form-control-lg" id="job_title" placeholder="Job title">
+          </div>
+          <button type="submit" class="btn btn-primary">find</button>
         </div>
-        <div class="col ml-auto">
-          <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-      </div>
-    </form>
-    
-  </div> 
+      </form>
+    </div>
+  </div>
 </div>
 
 <div class="container">
@@ -40,7 +38,7 @@
         <div class="card-body">
           <h5>Company: {{ d.company }}</h3>
           <p>
-            {{ d.description *10 }}
+            {{ d.description *2 }}
           </p>
           <button type="button" class="btn btn-lg btn-block btn-outline-primary">I like this one</button>
         </div>
@@ -71,10 +69,9 @@
     </div>
   </div>   
 </div>
-    
 
-  {% endfor %}
-  
-</div>
+{% endfor %}
+
+
 
 {% endblock %}

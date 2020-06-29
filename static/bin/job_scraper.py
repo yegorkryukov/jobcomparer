@@ -11,7 +11,7 @@ class JobsSpider(scrapy.Spider):
     def start_requests(self):
         pages = self.pages if self.pages else 1
         title = self.title if self.title else 'data scientist'
-        location = self.location if self.location else '20005'
+        location = self.location if self.location else '20001'
 
         urls = [
             'https://www.careerbuilder.com/jobs?keywords=%E2%80%9C'\
@@ -24,6 +24,9 @@ class JobsSpider(scrapy.Spider):
         for url in urls:
             logger.info(f'Processing URL: {url}')
             yield scrapy.Request(url=url, callback=self.parse)
+        # !!!!!!!!!!!!!!!
+            break # remove this line when finished debugging!!!!!
+        # !!!!!!!!!!!!!!!
 
     def parse(self, response):
         # extract data in spider

@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, Response
 import scrapy
 from scrapy.crawler import CrawlerRunner
 import logging
 from static.bin.job_scraper import JobsSpider
 import json
+import time
+from datetime import datetime
 
 crawl_runner = CrawlerRunner()
 jobs_list = []
@@ -21,43 +23,51 @@ def index():
   global scrape_complete
   global jobs_list
 
-  print(f'/index: SIP: {scrape_in_progress}, SC: {scrape_complete}')
-
-  return render_template(
-      'index.html', 
-      jobs_list=jobs_list,
-      scrape_complete=scrape_complete)
+  return render_template('index.html')
 
 @app.route('/scrape')
-def scrape_descriptions():
-  global scrape_in_progress
-  global scrape_complete
-
-  print(f'/scrape: SIP: {scrape_in_progress}, SC: {scrape_complete}')
-  if not scrape_in_progress:
-    scrape_in_progress = True
+def descriptions_data():
+  def scrape_data():
+    global scrape_in_progress
+    global scrape_complete
     global jobs_list
+
+    if not scrape_in_progress:
+      scrape_in_progress = True
+
+      json_data = json.dumps(
+                {'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+      print(json_data)
+      yield f"data:{json_data}\n\n"
+      time.sleep(1)
+      scrape_in_progress = False
+
+  return Response(scrape_data(), mimetype='text/event-stream')
+      
+  #     eventual = crawl_runner.crawl(
+  #       JobsSpider, 
+  #       jobs_list=jobs_list,
+  #       title=request.args.get('title', None),
+  #       location=request.args.get('location', None),
+  #       pages=request.args.get('location', None)
+  #     )
+
+  #     eventual.addCallback(finished_scrape)
     
-    eventual = crawl_runner.crawl(
-      JobsSpider, 
-      jobs_list=jobs_list,
-      title=request.args.get('title', None),
-      location=request.args.get('location', None),
-      pages=request.args.get('location', None)
-    )
+  # def finished_scrape(null):
+  #   global scrape_in_progress
+  #   global scrape_complete
+  #   global jobs_list
+  #   scrape_complete = True
+  #   scrape_in_progress = False
+  #   print(f'/index: SIP: {scrape_in_progress}, SC: {scrape_complete}')
+  #   data = json.dumps(jobs_list)
+  #   print(data)
+  #   yield f'data:{data}\n\n'
+    
+  # return Response(scrape_data(), mimetype='text/event-stream')
+    
 
-    eventual.addCallback(finished_scrape)
-    if len(jobs_list)>0: print(jobs_list[0])
-    return redirect('/')
-  elif scrape_complete:
-    return json.dumps(jobs_list)
-  return redirect('/')
-
-def finished_scrape(null):
-  global scrape_complete
-  global scrape_in_progress
-  scrape_complete = True
-  scrape_in_progress = False
 
 
 if __name__ == "__main__":

@@ -6,13 +6,15 @@
 
 <div class="container">
   <div class="row">
-    <div class="col border">
+    <div class="col">
       <form>
         <div class="form-row justify-content-center">
           <div class="col-sm-9">
             <input type="text" class="form-control form-control-lg" id="job_title" placeholder="Job title">
           </div>
-          <button type="submit" class="btn btn-primary">find</button>
+          <!-- <button type="submit" class="btn btn-primary"> -->
+            <a href="/scrape" class="btn btn-primary">find</a>
+          <!-- </button> -->
         </div>
       </form>
     </div>
@@ -23,59 +25,33 @@
 
 <div class="container">
   <div class="row justify-content-end">
-    <div class="card text-right">
-      <div class="card-body">
-        <h5>Round 1</h5>
+      <div class="text-muted">
+        <p>round 1</p>
       </div>      
-    </div>
   </div>
 </div>
 
-<div class="container">
-  {% for d in job_descriptions %}
-  <div class="row align-items-center">
-    <div class="card-deck mb-3 text-left">
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">{{ d.title }}</h4>
-        </div>       
-        <div class="card-body">
-          <h5>Company: {{ d.company }}</h3>
-          <p>
-            {{ d.description *2 }}
-          </p>
-          <button type="button" class="btn btn-lg btn-block btn-outline-primary">I like this one</button>
-        </div>
-      </div>
-      
-      <div class="col-sm-1">
-        <div class="row align-items-center">
-          <div class="col">
-            <div class="text-center">
-              <p>@</p>
-            </div>            
-          </div>  
-        </div>            
-      </div>
-    
-      <div class="card mb-4 shadow-sm">
-        <div class="card-header">
-          <h4 class="my-0 font-weight-normal">{{ d.title }}</h4>
-        </div>
-        <div class="card-body">
-          <h5>Company: {{ d.company }}</h3>
-          <p>
-            {{ d.description *10}}
-          </p>
-          <button type="button" class="btn btn-lg btn-block btn-outline-primary">I like this one</button>
-        </div>
-      </div>
+<div class="row mt-3"></div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-5 border" >
+      {% if not scrape_complete %}
+        <p>Click find</>
+      {% else %}
+        {% for job in jobs_list %}
+          <h2>{{ job.title }}</h2>
+        {% endfor %}
+      {% endif %}
     </div>
-  </div>   
+    <div class="col-sm-2 border">
+      
+    </div>
+    <div class="col-sm-5 border">
+      
+    </div>
+  </div>
 </div>
-
-{% endfor %}
-
 
 
 {% endblock %}

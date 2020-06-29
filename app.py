@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import scrapy
 from scrapy.crawler import CrawlerRunner
 import logging
@@ -13,26 +13,27 @@ scrape_complete = False
 app = Flask('Job Description Scraper')
 
 # boilerplate for testing
-job_descriptions = [
-  {
-  "title": "Senior Data Scientist", 
-  "company": "Jobot", 
-  "description": "This Jobot Job is hosted by: Ellina Oganyan Are you a fit? Easy Apply now by clicking the \"Apply on compan"
-  }
-]
+job_descriptions = []
 
 @app.route('/')
 @app.route('/home')
 def index():
+  global scrape_complete
+  global jobs_list
+
+  print(f'/index: SIP: {scrape_in_progress}, SC: {scrape_complete}')
+
   return render_template(
-    'index.html', 
-    job_descriptions=job_descriptions)
+      'index.html', 
+      jobs_list=jobs_list,
+      scrape_complete=scrape_complete)
 
 @app.route('/scrape')
 def scrape_descriptions():
   global scrape_in_progress
   global scrape_complete
 
+  print(f'/scrape: SIP: {scrape_in_progress}, SC: {scrape_complete}')
   if not scrape_in_progress:
     scrape_in_progress = True
     global jobs_list
@@ -46,17 +47,11 @@ def scrape_descriptions():
     )
 
     eventual.addCallback(finished_scrape)
-    return 'SCRAPING'
+    if len(jobs_list)>0: print(jobs_list[0])
+    return redirect('/')
   elif scrape_complete:
-    return 'SCRAPE COMPLETE'
-  return 'SCRAPE IN PROGRESS'
-
-@app.route('/results')
-def get_results():
-  global scrape_complete
-  if scrape_complete:
     return json.dumps(jobs_list)
-  return 'SCRAPING STILL IN PROGRESS'
+  return redirect('/')
 
 def finished_scrape(null):
   global scrape_complete
@@ -77,13 +72,13 @@ if __name__ == "__main__":
     # start the logger
     globalLogBeginner.beginLoggingTo([textFileLogObserver(stdout)])
 
-    logger = logging.getLogger(__name__)
+    # logger = logging.getLogger(__name__)
     logging.basicConfig(level=logging.INFO)
 
     # start the WSGI server
     root_resource = wsgi.WSGIResource(reactor, reactor.getThreadPool(), app)
     factory = server.Site(root_resource)
-    http_server = endpoints.TCP4ServerEndpoint(reactor, 9000)
+    http_server = endpoints.TCP4ServerEndpoint(reactor, 5000)
     http_server.listen(factory)
 
     # start event loop

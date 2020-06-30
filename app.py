@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, render_template, request, redirect, Response, jsonify
+from flask_restful import Resource, Api, reqparse
 import scrapy
 from scrapy.crawler import CrawlerRunner
 import logging
@@ -7,15 +8,27 @@ import json
 import time
 from datetime import datetime
 
-crawl_runner = CrawlerRunner()
-jobs_list = []
-scrape_in_progress = False
-scrape_complete = False
+# crawl_runner = CrawlerRunner()
+jobs_list = [{'title':'this is dummy title for debugging'}]
+# scrape_in_progress = False
+# scrape_complete = False
 
 app = Flask('Job Description Scraper')
+api = Api(app)
+parser = reqparse.RequestParser()
+parser.add_argument('job_title')
 
-# boilerplate for testing
-job_descriptions = []
+class JobsAPI(Resource):
+  def post(self):
+    args = parser.parse_args()
+    print(args)
+    return jsonify(args)
+  
+  def get(self):
+    print('get is working')
+    return ''
+
+api.add_resource(JobsAPI, '/jobs')
 
 @app.route('/')
 @app.route('/home')
@@ -25,24 +38,31 @@ def index():
 
   return render_template('index.html')
 
-@app.route('/scrape')
-def descriptions_data():
-  def scrape_data():
-    global scrape_in_progress
-    global scrape_complete
-    global jobs_list
+# def scrape_data(title):
+#     global scrape_in_progress
+#     global scrape_complete
+#     global jobs_list
 
-    if not scrape_in_progress:
-      scrape_in_progress = True
+#     print(f'Received this from scrape route: {title}')
 
-      json_data = json.dumps(
-                {'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
-      print(json_data)
-      yield f"data:{json_data}\n\n"
-      time.sleep(1)
-      scrape_in_progress = False
+#     for job in jobs_list:
+#       json_data = json.dumps(job)
+#       print(f'About to send this: {json_data}')
+#       time.sleep(3)
+#       scrape_complete = True
+#       return format_sse(json_data)
 
-  return Response(scrape_data(), mimetype='text/event-stream')
+
+# @app.route('/scrape', methods=['POST', 'GET'])
+# def scrape():
+#   title=request.form.get('job_title', None)
+#   print(f'Got this from the browser: {title}')
+#   def event_stream(title):
+#     while True:
+#       print(f'scrape_complete: {scrape_complete}')
+#       if scrape_complete:
+#         yield scrape_data(title)
+#   return Response(event_stream(title), mimetype='text/event-stream')
       
   #     eventual = crawl_runner.crawl(
   #       JobsSpider, 

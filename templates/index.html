@@ -7,14 +7,12 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <form id="search_form">
+      <form id="search_form" name="search_form">
         <div class="form-row justify-content-center">
           <div class="col-sm-9">
-            <input type="text" class="form-control form-control-lg" id="job_title" placeholder="Job title">
+            <input type="text" class="form-control form-control-lg" id="job_title" name="job_title" placeholder="Job title">
           </div>
-          <button type="submit" class="btn btn-primary" id="find">find
-            <!-- <a href="/scrape" class="btn btn-primary">find</a> -->
-          </button>
+          <button type="submit" class="btn btn-primary" id="find">Find</button>
         </div>
       </form>
     </div>
@@ -52,37 +50,5 @@
     </div>
   </div>
 </div>
-
-<script>
-
-window.onload = function(){	
-	$("#search_form").submit(function(event){
-    console.log(event);
-		submitForm();
-		return false;
-	});
-};
-
-function submitForm(){
-  console.log('running server-sent event function');
-
-  const source = new EventSource("/scrape");
-
-  source.onmessage = function (event) {
-      const data = JSON.parse(event.data);
-      console.log(data);
-      const newElement = document.createElement('p');
-      const card = document.getElementById('job_left');
-      newElement.innerHTML = 'message: ' + data;
-      card.appendChild(newElement);
-  };
-
-  source.onerror = function(err) {
-  console.error("EventSource failed:", err);
-};
-}
-
-  
-</script>
 
 {% endblock %}

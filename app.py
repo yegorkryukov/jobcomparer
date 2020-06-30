@@ -33,36 +33,12 @@ api.add_resource(JobsAPI, '/jobs')
 @app.route('/')
 @app.route('/home')
 def index():
-  global scrape_complete
-  global jobs_list
-
   return render_template('index.html')
 
-# def scrape_data(title):
-#     global scrape_in_progress
-#     global scrape_complete
-#     global jobs_list
-
-#     print(f'Received this from scrape route: {title}')
-
-#     for job in jobs_list:
-#       json_data = json.dumps(job)
-#       print(f'About to send this: {json_data}')
-#       time.sleep(3)
-#       scrape_complete = True
-#       return format_sse(json_data)
 
 
-# @app.route('/scrape', methods=['POST', 'GET'])
-# def scrape():
-#   title=request.form.get('job_title', None)
-#   print(f'Got this from the browser: {title}')
-#   def event_stream(title):
-#     while True:
-#       print(f'scrape_complete: {scrape_complete}')
-#       if scrape_complete:
-#         yield scrape_data(title)
-#   return Response(event_stream(title), mimetype='text/event-stream')
+
+
       
   #     eventual = crawl_runner.crawl(
   #       JobsSpider, 
@@ -74,18 +50,7 @@ def index():
 
   #     eventual.addCallback(finished_scrape)
     
-  # def finished_scrape(null):
-  #   global scrape_in_progress
-  #   global scrape_complete
-  #   global jobs_list
-  #   scrape_complete = True
-  #   scrape_in_progress = False
-  #   print(f'/index: SIP: {scrape_in_progress}, SC: {scrape_complete}')
-  #   data = json.dumps(jobs_list)
-  #   print(data)
-  #   yield f'data:{data}\n\n'
-    
-  # return Response(scrape_data(), mimetype='text/event-stream')
+
     
 
 

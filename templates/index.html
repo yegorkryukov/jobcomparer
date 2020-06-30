@@ -6,15 +6,20 @@
 
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div class="col-sm-10 ">
       <form id="search_form" name="search_form">
         <div class="form-row justify-content-center">
           <div class="col-sm-9">
             <input type="text" class="form-control form-control-lg" id="job_title" name="job_title" placeholder="Job title">
           </div>
-          <button type="submit" class="btn btn-primary" id="find">Find</button>
+          <button type="submit" class="btn btn-primary" id="find">Find</button>     
         </div>
       </form>
+    </div>
+    <div class="col-sm-2  d-flex">
+      <div class="text-muted align-self-center">
+        <p class="text-right">Round 1</p>
+      </div> 
     </div>
   </div>
 </div>
@@ -22,33 +27,63 @@
 <div class="row mt-3"></div>
 
 <div class="container">
-  <div class="row justify-content-end">
-      <div class="text-muted">
-        <p>round 1</p>
-      </div>      
-  </div>
+  
 </div>
 
 <div class="row mt-3"></div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-5 border" id="job_left">
-      <!-- {% if not scrape_complete %}
-        <p>Click find</>
-      {% else %}
-        {% for job in jobs_list %}
-          <h2>{{ job.title }}</h2>
-        {% endfor %}
-      {% endif %} -->
+<div class="d-flex align-items-stretch container-fluid">
+  <div class="d-flex row justify-content-center">
+    <div class="d-flex flex-column col-5 border shadow" id="job_left">
+      <div class="p-2">
+        <h2>Job description 1</h2>
+        <p>What You'll Get to Do as a Machine Learning Engineer:
+
+          Interpret and analyze IT Operations data using exploratory and statistical techniques.
+          Develop, implement and utilize data systems and other strategies that optimize statistical efficiency and data quality.
+          Develop data modeling methods in Databricks for anomaly detection, event correlation, and predictive self-healing.
+          Develop innovations in data analysis techniques.
+          Analyze and interpret trends or patterns in complex operational cloud application and infrastructure data sets;
+          You’ll Bring These Qualifications:
+          
+          Must be a US Citizen to obtain a DHS suitability clearance.
+          8+ years’ experience working in the IT industry.
+          5+ years of experience with statistical analysis, machine learning, predictive modeling, and/or optimization.
+          2+ years of experience with Databricks.
+          Experience working with big data technologies.
+          Experience working with Amazon Web Services (AWS).
+          Multiple Information Technology certifications are preferred in provisioning technologies such as Cloudera Certified Professional, SAS Certified Big Data Expert, Certified Specialist in Predictive Analytics (CSPA)
+        </p>
+      </div>
+      <div class="d-flex p-2 align-self-start">
+        <button class="btn btn-outline-primary btn-block shadow">I like this one</button>
+      </div>
     </div>
-    <div class="col-sm-2 border">
-      
+    <div class="col-auto align-self-center">
+      <i class="fas fa-history"></i>
+      <!-- <p class="text-muted">undo</p> -->
     </div>
-    <div class="col-sm-5 border">
-      
+    <div class="d-flex flex-column col-5 border shadow" id="job_right">
+      <div class="p-2">
+        <h2>Job description 2</h2>
+        <p>
+          The Leidos Innovations Center (LInC) seeks a Machine Learning Research Engineer primarily focused on cognitive signal processing, to work in our Arlington, VA office. The candidate will research & develop new, state-of-the-art machine learning algorithms and implement them across the RF domain (e.g., communications, radar, electronic warfare, spectrum sensing, and signals intelligence [SIGINT]), in both modelling and simulation environments and real time software embed systems. The candidate will also contribute to technology developments in signal processing, optimization, detection & estimation, deep learning, and adaptive decision and control. Requires basic knowledge of and ability to apply machine learning and radar/signal processing principles, theories, and concepts in support of direct programs, IR&D, and marketing efforts.
+
+          Primary Responsibilities
+          Designs and develops methods, algorithms, and systems that apply machine learning technologies to support advanced signal processing concepts.
+          Works within and leads cross-discipline engineering teams developing, integrating, testing and fielding Cognitive Electronic Warfare systems.
+          Supports business capture activities and proposals, by providing technical contributions in the areas of machine learning, advanced signal processing, radar, and electronic warfare.
+        </p>
+      </div>
+      <div class="d-flex p-2 align-self-start">
+        <button class="btn btn-outline-primary btn-block shadow">I like this one</button>
+      </div>
     </div>
   </div>
+</div>
+
+<div class="container">
+
 </div>
 
 {% endblock %}
